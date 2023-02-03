@@ -3,11 +3,11 @@ package dag_test
 import (
 	"testing"
 
-	"github.com/emrebdr/tdag/src"
+	tdag "github.com/emrebdr/tdag"
 )
 
 func TestCreateDag(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
@@ -15,7 +15,7 @@ func TestCreateDag(t *testing.T) {
 }
 
 func TestAddVertex(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
@@ -28,7 +28,7 @@ func TestAddVertex(t *testing.T) {
 }
 
 func TestAddEdge(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
@@ -55,7 +55,7 @@ func TestAddEdge(t *testing.T) {
 }
 
 func TestAddEdgeCyclicError(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
@@ -105,7 +105,7 @@ func TestAddEdgeCyclicError(t *testing.T) {
 }
 
 func TestDeleteVertex(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
@@ -123,7 +123,7 @@ func TestDeleteVertex(t *testing.T) {
 }
 
 func TestGetVertex(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
@@ -141,7 +141,7 @@ func TestGetVertex(t *testing.T) {
 }
 
 func TestGetEdge(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
@@ -173,7 +173,7 @@ func TestGetEdge(t *testing.T) {
 }
 
 func TestDeleteEdge(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
@@ -207,7 +207,7 @@ func TestDeleteEdge(t *testing.T) {
 }
 
 func TestGetAllVertices(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
@@ -230,7 +230,7 @@ func TestGetAllVertices(t *testing.T) {
 }
 
 func TestGetAcyclicGraphs(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
@@ -280,7 +280,7 @@ func TestGetAcyclicGraphs(t *testing.T) {
 }
 
 func TestIsEdge(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
@@ -316,7 +316,7 @@ func TestIsEdge(t *testing.T) {
 }
 
 func TestIsVertex(t *testing.T) {
-	dag := src.NewDag()
+	dag := tdag.NewDag()
 
 	if dag == nil {
 		t.Errorf("Couldn't create graph")
