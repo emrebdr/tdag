@@ -1,4 +1,4 @@
-package utils
+package tdag
 
 func RemoveFromArray(element string, array []string) []string {
 	var index int

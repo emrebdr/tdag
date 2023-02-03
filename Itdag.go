@@ -1,4 +1,4 @@
-package models
+package tdag
 
 type ITDag interface {
 	AddVertex(vertex interface{}) (string, error)

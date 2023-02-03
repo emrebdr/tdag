@@ -1,4 +1,4 @@
-package models
+package tdag
 
 type Vertex struct {
 	Id    string

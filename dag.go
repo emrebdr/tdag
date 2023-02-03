@@ -1,12 +1,9 @@
-package dag
+package tdag
 
 import (
 	"errors"
 	"fmt"
 	"sync"
-
-	"github.com/emrebdr/tdag/src/models"
-	"github.com/emrebdr/tdag/src/utils"
 
 	"github.com/google/uuid"
 )
@@ -14,15 +11,15 @@ import (
 type Dag struct {
 	Id       string
 	mutex    sync.RWMutex
-	vertices map[string]*models.Vertex
-	edges    map[string]*models.Edge
+	vertices map[string]*Vertex
+	edges    map[string]*Edge
 }
 
 func NewDag() *Dag {
 	return &Dag{
 		Id:       uuid.NewString(),
-		vertices: map[string]*models.Vertex{},
-		edges:    map[string]*models.Edge{},
+		vertices: map[string]*Vertex{},
+		edges:    map[string]*Edge{},
 	}
 }
 
@@ -36,7 +33,7 @@ func (d *Dag) AddVertex(vertex interface{}) (string, error) {
 func (d *Dag) addVertex(vertex interface{}) (string, error) {
 	id := uuid.NewString()
 
-	newVertex := &models.Vertex{
+	newVertex := &Vertex{
 		Id:    id,
 		Node:  vertex,
 		Edges: []string{},
@@ -96,7 +93,7 @@ func (d *Dag) addEdge(src, dst string) (string, error) {
 		return "", errors.New("the edge is already exist")
 	}
 
-	newEdge := &models.Edge{
+	newEdge := &Edge{
 		Id:   id,
 		Tail: dstVertex,
 	}
@@ -117,12 +114,12 @@ func (d *Dag) addEdge(src, dst string) (string, error) {
 	return id, nil
 }
 
-func (d *Dag) DeleteEdge(srcVertex *models.Vertex, id string) error {
+func (d *Dag) DeleteEdge(srcVertex *Vertex, id string) error {
 	return d.deleteEdge(srcVertex, id)
 }
 
-func (d *Dag) deleteEdge(srcVertex *models.Vertex, id string) error {
-	srcVertex.Edges = utils.RemoveFromArray(id, srcVertex.Edges)
+func (d *Dag) deleteEdge(srcVertex *Vertex, id string) error {
+	srcVertex.Edges = RemoveFromArray(id, srcVertex.Edges)
 	delete(d.edges, id)
 
 	return nil
@@ -130,7 +127,7 @@ func (d *Dag) deleteEdge(srcVertex *models.Vertex, id string) error {
 
 func (d *Dag) checkCyclic() error {
 	for _, vertex := range d.vertices {
-		var vertices []*models.Vertex
+		var vertices []*Vertex
 		_, cyclic := d.walk(vertex, vertices)
 		if cyclic != nil {
 			return errors.New("error cyclic dependency")
@@ -140,7 +137,7 @@ func (d *Dag) checkCyclic() error {
 	return nil
 }
 
-func (d *Dag) walk(vertex *models.Vertex, vertices []*models.Vertex) ([]*models.Vertex, error) {
+func (d *Dag) walk(vertex *Vertex, vertices []*Vertex) ([]*Vertex, error) {
 	for _, edgeId := range vertex.Edges {
 		edge := d.GetEdge(edgeId)
 		vertices = append(vertices, vertex)
@@ -154,7 +151,7 @@ func (d *Dag) walk(vertex *models.Vertex, vertices []*models.Vertex) ([]*models.
 	return vertices, nil
 }
 
-func (d *Dag) isEdgeExist(src, dst *models.Vertex) bool {
+func (d *Dag) isEdgeExist(src, dst *Vertex) bool {
 	for _, id := range src.Edges {
 		edge := d.GetEdge(id)
 		if edge.Tail.Id == dst.Id {
@@ -165,7 +162,7 @@ func (d *Dag) isEdgeExist(src, dst *models.Vertex) bool {
 	return false
 }
 
-func (d *Dag) isValid(vertices []*models.Vertex) bool {
+func (d *Dag) isValid(vertices []*Vertex) bool {
 	if len(vertices) > 1 {
 		if vertices[0].Id == vertices[len(vertices)-1].Id {
 			return false
@@ -183,7 +180,7 @@ func (d *Dag) isValid(vertices []*models.Vertex) bool {
 	return true
 }
 
-func (d *Dag) GetVertex(id string) *models.Vertex {
+func (d *Dag) GetVertex(id string) *Vertex {
 	vertex := d.vertices[id]
 	if vertex != nil {
 		return vertex
@@ -192,14 +189,14 @@ func (d *Dag) GetVertex(id string) *models.Vertex {
 	return nil
 }
 
-func (d *Dag) GetAllVertices() map[string]*models.Vertex {
+func (d *Dag) GetAllVertices() map[string]*Vertex {
 	return d.vertices
 }
 
-func (d *Dag) GetAcyclicGraphs() ([]*models.Vertex, error) {
-	graphs := make(map[string][]*models.Vertex)
+func (d *Dag) GetAcyclicGraphs() ([]*Vertex, error) {
+	graphs := make(map[string][]*Vertex)
 	for _, vertex := range d.vertices {
-		var vertices []*models.Vertex
+		var vertices []*Vertex
 		graph, err := d.walk(vertex, vertices)
 		if err != nil {
 			return nil, err
@@ -233,7 +230,7 @@ func (d *Dag) GetAcyclicGraphs() ([]*models.Vertex, error) {
 		}
 	}
 
-	var vertices []*models.Vertex
+	var vertices []*Vertex
 	for _, key := range unique_keys {
 		vertices = append(vertices, d.vertices[key])
 	}
@@ -241,7 +238,7 @@ func (d *Dag) GetAcyclicGraphs() ([]*models.Vertex, error) {
 	return vertices, nil
 }
 
-func (d *Dag) GetEdge(id string) *models.Edge {
+func (d *Dag) GetEdge(id string) *Edge {
 	edge := d.edges[id]
 	if edge != nil {
 		return edge
@@ -272,7 +269,7 @@ func (d *Dag) IsVertex(id string) (bool, error) {
 
 func (d *Dag) Print() {
 	for _, vertex := range d.vertices {
-		var vertices []*models.Vertex
+		var vertices []*Vertex
 		depends, err := d.walk(vertex, vertices)
 		if err != nil {
 			fmt.Println(err)

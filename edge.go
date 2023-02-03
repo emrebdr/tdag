@@ -1,4 +1,4 @@
-package models
+package tdag
 
 type Edge struct {
 	Id   string
