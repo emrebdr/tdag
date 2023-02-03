@@ -1,4 +1,4 @@
-module github.com/emrebdr/tdag
+module github.com/tosuninc/tdag
 
 go 1.19
 

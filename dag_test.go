@@ -3,7 +3,7 @@ package tdag_test
 import (
 	"testing"
 
-	tdag "github.com/emrebdr/tdag"
+	tdag "github.com/tosuninc/tdag"
 )
 
 func TestCreateDag(t *testing.T) {
